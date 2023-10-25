@@ -4,7 +4,7 @@ import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/use
 import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/views/sign_up_screen.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:clean_architecture_tdd_flutter_template/src/dashboard/presentation/views/dashboard.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
