@@ -1,22 +1,22 @@
 import 'package:clean_architecture_tdd_flutter_template/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
   static const routeName = '/dashboard';
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Placeholder(
       child: Center(
         child: Text(
-          'Dashboard Screen',
+          'Dashboard',
           style: context.theme.textTheme.bodyLarge?.copyWith(
             color: Colors.white,
           ),

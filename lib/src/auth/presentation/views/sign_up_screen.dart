@@ -8,7 +8,7 @@ import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/use
 import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/widgets/sign_up_form.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:clean_architecture_tdd_flutter_template/src/dashboard/presentation/views/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 );
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as LocalUserModel);
-            Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
+            Navigator.pushReplacementNamed(context, Dashboard.routeName);
           }
         },
         builder: (context, state) {
