@@ -1,0 +1,71 @@
+name: clean_architecture_tdd_flutter_template
+description: A new Flutter project.
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  http: ^1.1.0
+  bloc: ^8.1.2
+  flutter_bloc: ^8.1.3
+  get_it: ^7.6.4
+  lottie: ^2.6.0
+  shared_preferences: ^2.2.2
+  smooth_page_indicator: ^1.1.0
+  firebase_core: ^2.19.0
+  firebase_auth: ^4.11.1
+  cloud_firestore: ^4.11.0
+  firebase_storage: ^11.3.1
+  provider: ^6.0.5
+  iconly: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  mocktail: ^1.0.1
+  bloc_test: ^9.1.4
+  fake_cloud_firestore: ^2.4.2
+  firebase_storage_mocks: ^0.6.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
+    - assets/lotties/
+    - assets/vectors/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter-Black.ttf
+          weight: 900
+        - asset: assets/fonts/inter/Inter-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/inter/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/inter/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/inter/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/inter/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/inter/Inter-Light.ttf
+          weight: 300
+        - asset: assets/fonts/inter/Inter-Thin.ttf
+          weight: 200
+        - asset: assets/fonts/inter/Inter-ExtraLight.ttf
+          weight: 100
