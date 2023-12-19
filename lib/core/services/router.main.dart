@@ -2,33 +2,12 @@ part of 'router.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case '/':
-      final prefs = sl<SharedPreferences>();
+    case SplashScreen.routeName:
       return _pageBuilder(
-        (context) {
-          if (prefs.getBool(kIsFirstTimerKey) ?? true) {
-            return BlocProvider(
-              create: (_) => sl<OnBoardingCubit>(),
-              child: const OnBoardingScreen(),
-            );
-          } else if (sl<FirebaseAuth>().currentUser != null) {
-            final user = sl<FirebaseAuth>().currentUser!;
-            final localUser = LocalUserModel(
-              id: user.uid,
-              email: user.email ?? '',
-              username: user.displayName ?? '',
-              name: user.displayName ?? '',
-              role: 'user',
-            );
-            context.userProvider.initUser(localUser);
-
-            return const Dashboard();
-          }
-          return BlocProvider(
-            create: (_) => sl<AuthBloc>(),
-            child: const SignInScreen(),
-          );
-        },
+        (_) => BlocProvider(
+          create: (_) => sl<AuthBloc>(),
+          child: const SplashScreen(),
+        ),
         settings: settings,
       );
     case SignInScreen.routeName:
@@ -39,22 +18,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
-    case SignUpScreen.routeName:
-      return _pageBuilder(
-        (_) => BlocProvider(
-          create: (_) => sl<AuthBloc>(),
-          child: const SignUpScreen(),
-        ),
-        settings: settings,
-      );
     case Dashboard.routeName:
       return _pageBuilder(
         (_) => const Dashboard(),
         settings: settings,
       );
-    case '/forget-password':
+    case ProfileScreen.routeName:
       return _pageBuilder(
-        (_) => const PageUnderConstruction(),
+        (_) => const ProfileScreen(),
         settings: settings,
       );
     default:

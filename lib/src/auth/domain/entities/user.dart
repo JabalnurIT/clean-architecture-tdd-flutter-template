@@ -1,36 +1,37 @@
 import 'package:equatable/equatable.dart';
 
-class LocalUser extends Equatable {
-  const LocalUser({
+class User extends Equatable {
+  const User({
     required this.id,
     required this.email,
-    required this.username,
     required this.name,
     required this.role,
-    this.profilePic,
+    this.profileImg,
+    this.location,
   });
 
-  const LocalUser.empty()
-      : id = '',
-        email = '',
-        username = '',
-        name = '',
-        role = '',
-        profilePic = '';
+  const User.empty()
+      : id = 1,
+        email = 'testing@admin.com',
+        name = 'testing',
+        role = 'employee',
+        profileImg = '',
+        location = '';
 
-  final String id;
+  final int id;
   final String email;
-  final String username;
   final String name;
   final String role;
-  final String? profilePic;
+  final String? profileImg;
+  final String? location;
 
   @override
-  List<Object?> get props => [id, email, username];
+  List<Object?> get props => [id, name, email, profileImg, location, role];
 
   @override
   String toString() {
-    return 'LocalUser{id: $id, email: $email, username: $username,'
-        ' role: $role, name: $name, profilePic: $profilePic}';
+    return 'LocalUser{id: $id, email: $email,'
+        ' role: $role,'
+        ' name: $name, profileImg: $profileImg, location: $location}';
   }
 }

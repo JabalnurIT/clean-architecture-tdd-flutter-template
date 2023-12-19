@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/user_model.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
@@ -8,40 +7,40 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  const tLocalUserModel = LocalUserModel.empty();
+  const tUserModel = UserModel.empty();
 
-  test('should be a subclass of [LocalUser] entity',
-      () => expect(tLocalUserModel, isA<LocalUser>()));
+  test('should be a subclass of [User] entity',
+      () => expect(tUserModel, isA<User>()));
 
   final tMap = jsonDecode(fixture('user.json')) as DataMap;
   group('fromMap', () {
-    test('should return a valid [LocalUserModel] from the Map', () {
-      final result = LocalUserModel.fromMap(tMap);
+    test('should return a valid [UserModel] from the Map', () {
+      final result = UserModel.fromMap(tMap);
 
-      expect(result, equals(tLocalUserModel));
+      expect(result, equals(tUserModel));
     });
 
-    test('should throw an [Error] when the map is invalid ', () {
+    test('should throw an Error when the map is invalid ', () {
       final map = DataMap.from(tMap)..remove('id');
 
-      const call = LocalUserModel.fromMap;
+      const call = UserModel.fromMap;
 
       expect(() => call(map), throwsA(isA<Error>()));
     });
   });
   group('toMap', () {
     test('should return a valid [DataMap] from the model', () {
-      final result = tLocalUserModel.toMap();
+      final result = tUserModel.toMap();
 
       expect(result, equals(tMap));
     });
   });
 
   group('copyWith', () {
-    test('should return a valid [LocalDataModel] with updated value', () {
-      final result = tLocalUserModel.copyWith(
+    test('should return a valid [DataModel] with updated value', () {
+      final result = tUserModel.copyWith(
         email: 'email',
-        username: 'username',
+        name: 'name',
       );
 
       expect(
@@ -49,8 +48,8 @@ void main() {
         equals('email'),
       );
       expect(
-        result.username,
-        equals('username'),
+        result.name,
+        equals('name'),
       );
     });
   });

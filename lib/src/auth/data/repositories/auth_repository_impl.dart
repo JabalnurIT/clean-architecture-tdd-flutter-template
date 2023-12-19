@@ -1,11 +1,13 @@
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/exceptions.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/failure.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../../../core/enums/update_user_action.dart';
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/typedef.dart';
+import '../../domain/entities/user.dart';
+import '../../domain/repositories/auth_repository.dart';
+import '../datasources/auth_remote_data_source.dart';
+import '../models/user_model.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(this._remoteDataSource);
@@ -13,23 +15,13 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
 
   @override
-  ResultFuture<void> forgotPassword(String email) async {
-    try {
-      await _remoteDataSource.forgotPassword(email);
-      return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure.fromException(e));
-    }
-  }
-
-  @override
-  ResultFuture<LocalUser> signIn({
-    required String username,
+  ResultFuture<User> signIn({
+    required String email,
     required String password,
   }) async {
     try {
       final result = await _remoteDataSource.signIn(
-        username: username,
+        email: email,
         password: password,
       );
       return Right(result);
@@ -39,19 +31,42 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  ResultFuture<void> signUp({
-    required String name,
-    required String username,
-    required String email,
-    required String password,
+  ResultFuture<User> signInWithCredential() async {
+    try {
+      final result = await _remoteDataSource.signInWithCredential();
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<User> updateUser({
+    required List<UpdateUserAction> actions,
+    required User userData,
   }) async {
     try {
-      await _remoteDataSource.signUp(
-        name: name,
-        username: username,
-        email: email,
-        password: password,
+      final UserModel user = UserModel(
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        role: userData.role,
+        profileImg: userData.profileImg,
       );
+      final result = await _remoteDataSource.updateUser(
+        actions: actions,
+        userData: user,
+      );
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<void> signOut() async {
+    try {
+      await _remoteDataSource.signOut();
       return const Right(null);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
@@ -59,16 +74,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  ResultFuture<void> updateUser({
-    required UpdateUserAction action,
-    required userData,
-  }) async {
+  ResultFuture<dynamic> addPhoto({required String type}) async {
     try {
-      await _remoteDataSource.updateUser(
-        action: action,
-        userData: userData,
-      );
-      return const Right(null);
+      final result = await _remoteDataSource.addPhoto(type: type);
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

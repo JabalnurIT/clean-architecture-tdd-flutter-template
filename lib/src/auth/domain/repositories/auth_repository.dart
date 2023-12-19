@@ -1,26 +1,25 @@
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
+import '../../../../core/enums/update_user_action.dart';
+import '../../../../core/utils/typedef.dart';
+import '../entities/user.dart';
 
 abstract class AuthRepository {
   const AuthRepository();
 
-  ResultFuture<void> forgotPassword(String email);
-
-  ResultFuture<LocalUser> signIn({
-    required String username,
-    required String password,
-  });
-
-  ResultFuture<void> signUp({
-    required String name,
-    required String username,
+  ResultFuture<User> signIn({
     required String email,
     required String password,
   });
 
-  ResultFuture<void> updateUser({
-    required UpdateUserAction action,
-    required dynamic userData,
+  ResultFuture<User> signInWithCredential();
+
+  ResultFuture<User> updateUser({
+    required List<UpdateUserAction> actions,
+    required User userData,
+  });
+
+  ResultFuture<void> signOut();
+
+  ResultFuture<dynamic> addPhoto({
+    required String type,
   });
 }

@@ -1,69 +1,62 @@
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
+import '../../../../core/utils/typedef.dart';
+import '../../domain/entities/user.dart';
 
-class LocalUserModel extends LocalUser {
-  const LocalUserModel({
-    required String id,
-    required String email,
-    required String username,
-    required String name,
-    required String role,
-    String? profilePic,
-  }) : super(
-          id: id,
-          email: email,
-          username: username,
-          name: name,
-          role: role,
-          profilePic: profilePic,
-        );
+class UserModel extends User {
+  const UserModel({
+    required super.id,
+    required super.email,
+    required super.name,
+    required super.role,
+    super.profileImg,
+    super.location,
+  });
 
-  const LocalUserModel.empty()
+  const UserModel.empty()
       : this(
-          id: '',
-          email: '',
-          username: '',
-          name: '',
-          role: '',
-          profilePic: '',
+          id: 1,
+          email: 'testing@admin.com',
+          name: 'testing',
+          role: 'employee',
+          profileImg: null,
+          location: null,
         );
 
-  LocalUserModel copyWith({
-    String? id,
+  UserModel copyWith({
+    int? id,
     String? email,
-    String? username,
     String? name,
     String? role,
-    String? profilePic,
+    String? profileImg,
+    String? location,
   }) {
-    return LocalUserModel(
+    return UserModel(
       id: id ?? this.id,
       email: email ?? this.email,
-      username: username ?? this.username,
       name: name ?? this.name,
       role: role ?? this.role,
-      profilePic: profilePic ?? this.profilePic,
+      profileImg: profileImg ?? this.profileImg,
+      location: location ?? this.location,
     );
   }
 
-  LocalUserModel.fromMap(DataMap map)
+  UserModel.fromMap(DataMap map)
       : super(
-          id: map['id'] as String,
+          id: map['id'] as int,
           email: map['email'] as String,
-          username: map['username'] as String,
           name: map['name'] as String,
           role: map['role'] as String,
-          profilePic: map['profilePic'] as String?,
+          profileImg: map['profile_img'] as String?,
+          location: map['location'] as String?,
         );
 
   DataMap toMap() {
     return {
       'id': id,
       'email': email,
-      'username': username,
       'name': name,
       'role': role,
-      'profilePic': profilePic,
+      'profile_img': profileImg,
+      'location': location,
     };
   }
 }

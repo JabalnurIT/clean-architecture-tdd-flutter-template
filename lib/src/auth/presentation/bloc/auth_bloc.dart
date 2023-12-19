@@ -1,13 +1,13 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/forgot_password.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_in.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_up.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/update_user.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../../core/enums/update_user_action.dart';
+import '../../domain/entities/user.dart';
+import '../../domain/usecases/add_photo.dart';
+import '../../domain/usecases/sign_in.dart';
+import '../../domain/usecases/sign_in_with_credential.dart';
+import '../../domain/usecases/sign_out.dart';
+import '../../domain/usecases/update_user.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -15,33 +15,48 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({
     required SignIn signIn,
-    required SignUp signUp,
-    required ForgotPassword forgotPassword,
+    required SignInWithCredential signInWithCredential,
     required UpdateUser updateUser,
+    required SignOut signOut,
+    required AddPhoto addPhoto,
   })  : _signIn = signIn,
-        _signUp = signUp,
-        _forgotPassword = forgotPassword,
+        _signInWithCredential = signInWithCredential,
         _updateUser = updateUser,
+        _signOut = signOut,
+        _addPhoto = addPhoto,
         super(const AuthInitial()) {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
     });
+    on<SignInWithCredentialEvent>(_signInWithCredentialHandler);
     on<SignInEvent>(_signInHandler);
-    on<SignUpEvent>(_signUpHandler);
-    on<ForgotPasswordEvent>(_forgetPasswordHandler);
     on<UpdateUserEvent>(_updateUserHandler);
+    on<SignOutEvent>(_signOutHandler);
+    on<AddPhotoEvent>(_addPhotoHandler);
   }
   final SignIn _signIn;
-  final SignUp _signUp;
-  final ForgotPassword _forgotPassword;
+  final SignInWithCredential _signInWithCredential;
   final UpdateUser _updateUser;
+  final SignOut _signOut;
+  final AddPhoto _addPhoto;
+
+  Future<void> _signInWithCredentialHandler(
+    SignInWithCredentialEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _signInWithCredential();
+    result.fold(
+      (_) => emit(const NotSignedIn()),
+      (user) => emit(SignedIn(user)),
+    );
+  }
 
   Future<void> _signInHandler(
     SignInEvent event,
     Emitter<AuthState> emit,
   ) async {
     final result = await _signIn(SignInParams(
-      username: event.username,
+      email: event.email,
       password: event.password,
     ));
     result.fold(
@@ -50,44 +65,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  Future<void> _signUpHandler(
-    SignUpEvent event,
-    Emitter<AuthState> emit,
-  ) async {
-    final result = await _signUp(SignUpParams(
-      username: event.username,
-      password: event.password,
-      email: event.email,
-      name: event.name,
-    ));
-    result.fold(
-      (failure) => emit(AuthError(failure.errorMessage)),
-      (_) => emit(const SignedUp()),
-    );
-  }
-
-  Future<void> _forgetPasswordHandler(
-    ForgotPasswordEvent event,
-    Emitter<AuthState> emit,
-  ) async {
-    final result = await _forgotPassword(event.email);
-    result.fold(
-      (failure) => emit(AuthError(failure.errorMessage)),
-      (_) => emit(const ForgotPasswordSent()),
-    );
-  }
-
   Future<void> _updateUserHandler(
     UpdateUserEvent event,
     Emitter<AuthState> emit,
   ) async {
     final result = await _updateUser(UpdateUserParams(
-      action: event.action,
+      actions: event.actions,
       userData: event.userData,
     ));
     result.fold(
       (failure) => emit(AuthError(failure.errorMessage)),
-      (_) => emit(const UserUpdated()),
+      (user) => emit(UserUpdated(user)),
+    );
+  }
+
+  Future<void> _signOutHandler(
+    SignOutEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _signOut();
+    result.fold(
+      (failure) => emit(AuthError(failure.errorMessage)),
+      (_) => emit(const NotSignedIn()),
+    );
+  }
+
+  Future<void> _addPhotoHandler(
+    AddPhotoEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _addPhoto(event.type);
+    return result.fold(
+      (failure) => emit(EditUserError(failure.errorMessage)),
+      (photo) => emit(PhotoProfileAdded(photo)),
     );
   }
 }

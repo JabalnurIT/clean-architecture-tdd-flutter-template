@@ -1,0 +1,15 @@
+{
+    "id": 0,
+    "name": "Testing",
+    "email": "",
+    "phone": "",
+    "date_of_birth": "",
+    "bagian_id": 0,
+    "jenis_karyawan": "Organik",
+    "nik": "",
+    "card_start": "",
+    "card_stop": "",
+    "card_number": "",
+    "photo": null,
+    "is_checked": false
+}

@@ -1,16 +1,17 @@
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../../src/auth/domain/entities/user.dart';
+
 class UserProvider extends ChangeNotifier {
-  LocalUserModel? _user;
+  User? _user;
 
-  LocalUserModel? get user => _user;
+  User? get user => _user;
 
-  void initUser(LocalUserModel user) {
+  void initUser(User user) {
     if (_user != user) _user = user;
   }
 
-  set user(LocalUserModel? user) {
+  set user(User? user) {
     if (_user != user) {
       _user = user;
       Future.delayed(Duration.zero, notifyListeners);

@@ -1,6 +1,6 @@
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
 import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_in.dart';
+import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,7 +11,7 @@ void main() {
   late AuthRepository repository;
   late SignIn usecase;
 
-  const tUsername = 'username';
+  const tEmail = 'email';
   const tPassword = 'password';
 
   setUp(() {
@@ -19,14 +19,14 @@ void main() {
     usecase = SignIn(repository);
   });
 
-  const tUser = LocalUser.empty();
+  const tUser = User.empty();
 
   test(
-    'should call the [AuthRepo.forgotPassword]',
+    'should call the [AuthRepo.signIn]',
     () async {
       when(
         () => repository.signIn(
-          username: any(named: 'username'),
+          email: any(named: 'email'),
           password: any(named: 'password'),
         ),
       ).thenAnswer(
@@ -35,14 +35,14 @@ void main() {
 
       final result = await usecase(
         const SignInParams(
-          username: tUsername,
+          email: tEmail,
           password: tPassword,
         ),
       );
 
-      expect(result, equals(const Right<dynamic, LocalUser>(tUser)));
+      expect(result, equals(const Right<dynamic, User>(tUser)));
 
-      verify(() => repository.signIn(username: tUsername, password: tPassword))
+      verify(() => repository.signIn(email: tEmail, password: tPassword))
           .called(1);
       verifyNoMoreInteractions(repository);
     },

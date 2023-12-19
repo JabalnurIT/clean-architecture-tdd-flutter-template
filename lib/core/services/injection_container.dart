@@ -1,21 +1,19 @@
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/repositories/auth_repository_impl.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/forgot_password.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_in.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_up.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/update_user.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:get_it/get_it.dart';
-import '../../src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
-import '../../src/on_boarding/data/repositories/on_boarding_repository_impl.dart';
-import '../../src/on_boarding/domain/repositories/on_boarding_repository.dart';
-import '../../src/on_boarding/domain/usecases/cache_first_timer.dart';
-import '../../src/on_boarding/domain/usecases/check_if_user_is_first_timer.dart';
-import '../../src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../src/auth/data/datasources/auth_remote_data_source.dart';
+import '../../src/auth/data/repositories/auth_repository_impl.dart';
+import '../../src/auth/domain/repositories/auth_repository.dart';
+import '../../src/auth/domain/usecases/add_photo.dart';
+import '../../src/auth/domain/usecases/sign_in.dart';
+import '../../src/auth/domain/usecases/sign_in_with_credential.dart';
+import '../../src/auth/domain/usecases/sign_out.dart';
+import '../../src/auth/domain/usecases/update_user.dart';
+import '../../src/auth/presentation/bloc/auth_bloc.dart';
+import '../services/api.dart';
 
 part 'injection_container.main.dart';

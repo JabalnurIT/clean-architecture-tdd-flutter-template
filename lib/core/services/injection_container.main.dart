@@ -3,8 +3,38 @@ part of 'injection_container.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  await _initOnBoarding();
+  final prefs = await SharedPreferences.getInstance();
+  final dio = Dio();
+  final api = API();
+  final imagePicker = ImagePicker();
+  final geolocator = GeolocatorPlatform.instance;
+  final filePicker = FilePicker.platform;
+
+  await _initCore(
+      prefs: prefs,
+      dio: dio,
+      api: api,
+      imagePicker: imagePicker,
+      geolocator: geolocator,
+      filePicker: filePicker);
   await _initAuth();
+}
+
+Future<void> _initCore({
+  required SharedPreferences prefs,
+  required Dio dio,
+  required API api,
+  required ImagePicker imagePicker,
+  required GeolocatorPlatform geolocator,
+  required FilePicker filePicker,
+}) async {
+  sl
+    ..registerLazySingleton(() => dio)
+    ..registerLazySingleton(() => api)
+    ..registerLazySingleton(() => prefs)
+    ..registerLazySingleton(() => imagePicker)
+    ..registerLazySingleton(() => geolocator)
+    ..registerLazySingleton(() => filePicker);
 }
 
 Future<void> _initAuth() async {
@@ -12,54 +42,23 @@ Future<void> _initAuth() async {
     ..registerFactory(
       () => AuthBloc(
         signIn: sl(),
-        signUp: sl(),
+        signInWithCredential: sl(),
         updateUser: sl(),
-        forgotPassword: sl(),
+        signOut: sl(),
+        addPhoto: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))
-    ..registerLazySingleton(() => SignUp(sl()))
+    ..registerLazySingleton(() => SignInWithCredential(sl()))
     ..registerLazySingleton(() => UpdateUser(sl()))
-    ..registerLazySingleton(() => ForgotPassword(sl()))
+    ..registerLazySingleton(() => SignOut(sl()))
+    ..registerLazySingleton(() => AddPhoto(sl()))
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
-        authClient: sl(),
-        cloudStoreClient: sl(),
-        dbClient: sl(),
+        sharedPreferences: sl(),
+        dio: sl(),
+        api: sl(),
       ),
-    )
-    ..registerLazySingleton(() => FirebaseAuth.instance)
-    ..registerLazySingleton(() => FirebaseFirestore.instance)
-    ..registerLazySingleton(() => FirebaseStorage.instance);
-}
-
-Future<void> _initOnBoarding() async {
-  final prefs = await SharedPreferences.getInstance();
-  sl
-    // ON BOARDING
-    // App Logic
-    ..registerFactory(
-      () => OnBoardingCubit(
-        cacheFirstTimer: sl(),
-        checkIfUserIsFirstTimer: sl(),
-      ),
-    )
-
-    // Use cases
-    ..registerLazySingleton(() => CacheFirstTimer(sl()))
-    ..registerLazySingleton(() => CheckIfUserIsFirstTimer(sl()))
-
-    // Repository
-    ..registerLazySingleton<OnBoardingRepository>(
-      () => OnBoardingRepositoryImpl(sl()),
-    )
-
-    // Data sources
-    ..registerLazySingleton<OnBoardingLocalDataSource>(
-      () => OnBoardingLocalDataSourceImpl(sl()),
-    )
-
-    // EXTERNAL DEPENDENCIES
-    ..registerLazySingleton(() => prefs);
+    );
 }

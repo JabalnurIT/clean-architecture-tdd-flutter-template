@@ -11,9 +11,11 @@ class PageUnderConstruction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GradientBackground(
-        image: MediaRes.defaultBackground,
+        image: MediaRes.colorBackground,
         child: Center(
-          child: Lottie.asset(MediaRes.construction),
+          child: Lottie.asset(
+            MediaRes.construction,
+          ),
         ),
       ),
     );

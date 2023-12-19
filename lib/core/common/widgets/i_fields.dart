@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../../res/colours.dart';
+import '../../res/fonts.dart';
 
 class IFields extends StatelessWidget {
   const IFields({
@@ -14,6 +17,7 @@ class IFields extends StatelessWidget {
     this.keyboardType,
     this.overrideValidator = false,
     this.hintStyle,
+    this.onTap,
   });
 
   final String? Function(String?)? validator;
@@ -27,35 +31,48 @@ class IFields extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool overrideValidator;
   final TextStyle? hintStyle;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enableInteractiveSelection: onTap == null,
       controller: controller,
+      inputFormatters: [
+        if (keyboardType == TextInputType.number)
+          FilteringTextInputFormatter.digitsOnly,
+      ],
       validator: overrideValidator
           ? validator
           : (value) {
               if (value == null || value.isEmpty) {
-                return 'This field is required';
+                return '**Field tidak boleh kosong';
               }
               return validator?.call(value);
             },
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
+      onTap: onTap,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: Colours.primaryColour,
+        fontFamily: Fonts.inter,
+      ),
       readOnly: readOnly,
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: BorderRadius.circular(10),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(90),
-          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colours.primaryColour),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),

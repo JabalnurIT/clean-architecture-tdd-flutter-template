@@ -9,9 +9,11 @@ class Colours {
     Color(0xFFFDFAD1),
   ];
 
-  static const Color primaryColour = Color(0xFF458CFF);
+  static const Color primaryColour = Color(0xFF315784);
 
-  static const Color neutralTextColour = Color(0xFF757C8E);
+  static const Color secondaryColour = Color(0xFFF4F6F8);
+
+  static const Color neutralTextColour = Color(0xFFD8D8D8);
 
   static const Color physicsTileColour = Color(0xFFD3D5FE);
 
@@ -44,4 +46,16 @@ class Colours {
   static const Color currentUserChatBubbleColourDarker = Color(0xFF1976D2);
 
   static const Color otherUserChatBubbleColourDarker = Color(0xFFE0E0E0);
+
+  static const Color errorColour = Color(0xFFB90000);
+
+  static const Color itemCardBorderColour = Color(0xFFD9D9D9);
+
+  static const Color primaryColourDisabled = Color(0x80315784);
+
+  static const Color secondaryColourDisabled = Color(0xEEF4F6F8);
+
+  static const Color errorColourDisabled = Color(0x80D32F2F);
+
+  static const Color profileBackgroundColour = Color(0xFFD8D8D8);
 }

@@ -4,57 +4,50 @@ abstract class AuthEvent extends Equatable {
   const AuthEvent();
 }
 
-class ForgotPasswordEvent extends AuthEvent {
-  const ForgotPasswordEvent({
-    required this.email,
-  });
-
-  final String email;
+class SignInWithCredentialEvent extends AuthEvent {
+  const SignInWithCredentialEvent();
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [];
 }
 
 class SignInEvent extends AuthEvent {
   const SignInEvent({
-    required this.username,
-    required this.password,
-  });
-
-  final String username;
-  final String password;
-
-  @override
-  List<Object> get props => [username, password];
-}
-
-class SignUpEvent extends AuthEvent {
-  const SignUpEvent({
-    required this.username,
-    required this.password,
     required this.email,
-    required this.name,
+    required this.password,
   });
 
-  final String username;
-  final String password;
   final String email;
-  final String name;
+  final String password;
 
   @override
-  List<Object> get props => [username, password, email, name];
+  List<Object> get props => [email, password];
 }
 
 class UpdateUserEvent extends AuthEvent {
-  UpdateUserEvent({required this.action, required this.userData})
-      : assert(
-          userData is String || userData is File,
-          'userData must be a String or a File, but was ${userData.runtimeType}',
-        );
+  const UpdateUserEvent({required this.actions, required this.userData});
 
-  final UpdateUserAction action;
-  final dynamic userData;
+  final List<UpdateUserAction> actions;
+  final User userData;
 
   @override
-  List<Object> get props => [action, userData];
+  List<Object> get props => [actions, userData];
+}
+
+class SignOutEvent extends AuthEvent {
+  const SignOutEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AddPhotoEvent extends AuthEvent {
+  const AddPhotoEvent({
+    required this.type,
+  });
+
+  final String type;
+
+  @override
+  List<Object> get props => [type];
 }

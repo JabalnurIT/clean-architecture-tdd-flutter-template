@@ -1,37 +1,36 @@
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/usecase/usecase.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
-class UpdateUser implements UsecaseWithParams<void, UpdateUserParams> {
+import '../../../../core/enums/update_user_action.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../../../core/utils/typedef.dart';
+import '../entities/user.dart';
+import '../repositories/auth_repository.dart';
+
+class UpdateUser implements UsecaseWithParams<User, UpdateUserParams> {
   const UpdateUser(this._repository);
 
   final AuthRepository _repository;
 
   @override
-  ResultFuture<void> call(UpdateUserParams params) async =>
-      _repository.updateUser(
-        action: params.action,
+  ResultFuture<User> call(UpdateUserParams params) => _repository.updateUser(
+        actions: params.actions,
         userData: params.userData,
       );
 }
 
 class UpdateUserParams extends Equatable {
   const UpdateUserParams({
-    required this.action,
+    required this.actions,
     required this.userData,
   });
 
-  const UpdateUserParams.empty()
-      : this(
-          action: UpdateUserAction.name,
-          userData: 'name',
-        );
+  UpdateUserParams.empty()
+      : actions = [UpdateUserAction.email],
+        userData = const User.empty();
 
-  final UpdateUserAction action;
-  final dynamic userData;
+  final List<UpdateUserAction> actions;
+  final User userData;
 
   @override
-  List<Object?> get props => [action, userData];
+  List<Object?> get props => [actions, userData];
 }

@@ -31,20 +31,66 @@ class SignedIn extends AuthState {
     this.user,
   );
 
-  final LocalUser user;
+  final User user;
 
   @override
   List<Object> get props => [user];
 }
 
-class SignedUp extends AuthState {
-  const SignedUp();
-}
+class NotSignedIn extends AuthState {
+  const NotSignedIn();
 
-class ForgotPasswordSent extends AuthState {
-  const ForgotPasswordSent();
+  @override
+  List<Object> get props => [];
 }
 
 class UserUpdated extends AuthState {
-  const UserUpdated();
+  const UserUpdated(
+    this.user,
+  );
+
+  final User user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+class SignedOut extends AuthState {
+  const SignedOut();
+
+  @override
+  List<Object> get props => [];
+}
+
+class EditUserError extends AuthState {
+  const EditUserError(
+    this.message,
+  );
+
+  final String message;
+
+  @override
+  List<Object> get props => [message];
+}
+
+class EditUserUpdating extends AuthState {
+  const EditUserUpdating();
+}
+
+// class DataLoaded extends AuthState {
+//   const DataLoaded(this.user);
+
+//   final User user;
+
+//   @override
+//   List<Object> get props => [user];
+// }
+
+class PhotoProfileAdded extends AuthState {
+  const PhotoProfileAdded(this.photo);
+
+  final dynamic photo;
+
+  @override
+  List<Object> get props => [photo];
 }

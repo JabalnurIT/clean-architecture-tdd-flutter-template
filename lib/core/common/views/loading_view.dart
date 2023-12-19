@@ -1,8 +1,11 @@
-import 'package:clean_architecture_tdd_flutter_template/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../res/colours.dart';
+
 class LoadingView extends StatelessWidget {
-  const LoadingView({super.key});
+  const LoadingView({super.key, this.color});
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class LoadingView extends StatelessWidget {
       child: Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(
-            context.theme.colorScheme.secondary,
+            color ?? Colours.secondaryColour,
           ),
         ),
       ),
